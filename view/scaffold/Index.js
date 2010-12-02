@@ -51,7 +51,7 @@ ExtMVC.registerView('scaffold', 'index', {
       title: this.getTitle(),
       tbar:  tbarConfig,
       bbar:  bbar,
-      
+/*      
       keys:  [
         {
           key:     'a',
@@ -68,7 +68,7 @@ ExtMVC.registerView('scaffold', 'index', {
           scope:   this,
           handler: this.onDelete
         }
-      ]
+      ] */
     });
     
     Ext.grid.GridPanel.prototype.initComponent.apply(this, arguments);

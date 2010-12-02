@@ -5436,6 +5436,7 @@ ExtMVC.view.HasManyEditorGridPanel = Ext.extend(Ext.grid.EditorGridPanel, {
    * Called when the Add button is clicked on the top toolbar
    */
   onAdd: function(btn) {
+//  Ext.Msg.alert('foo','foo'); // WEW
     if (!this.addWindow) {
       this.addWindow = new Ext.Window(
         Ext.applyIf(this.windowConfig, {
@@ -5871,25 +5872,26 @@ ExtMVC.registerView('scaffold', 'index', {
     Ext.applyIf(this, {
       title: this.getTitle(),
       tbar:  tbarConfig,
-      bbar:  bbar,
-      
+      bbar:  bbar
+/*    bbar:  bbar,
+      WEW - this is where the 'a' key problem lies 
       keys:  [
         {
-          key:     'a',
+          key:     'Q', // WEW
           scope:   this,
-          handler: this.onAdd
+          handler: this.onXAdd
         },
         {
           key:     'e',
           scope:   this,
-          handler: this.onEdit
+          handler: this.onXEdit
         },
         {
           key:     Ext.EventObject.DELETE,
           scope:   this,
-          handler: this.onDelete
+          handler: this.onXDelete
         }
-      ]
+      ] */
     });
     
     Ext.grid.GridPanel.prototype.initComponent.apply(this, arguments);
@@ -6221,7 +6223,7 @@ ExtMVC.registerView('scaffold', 'index', {
       items.push(this.deleteButton, '-');
     }
     
-    if (this.hasSearchField === true) {
+    if (this.hasSearchField === true) { 
       this.searchField = this.buildSearchField();
       items.push(this.searchField, '-');
     }
@@ -6295,9 +6297,10 @@ ExtMVC.registerView('scaffold', 'index', {
       trigger1Class   :'x-form-clear-trigger',
       trigger2Class   :'x-form-search-trigger'
     });
-    
+
     this.searchField.on('specialkey', function(field, e) {
       if (e.getKey() === e.ESC)   this.clearSearchField(); e.stopEvent();
+      if (e.getKey() === e.DEL)   this.clearSearchField(); e.stopEvent();
       if (e.getKey() === e.ENTER) this.onSearch();
     }, this);
     
@@ -6345,9 +6348,26 @@ ExtMVC.registerView('scaffold', 'index', {
     this.store.reload({params:o});
   },
   
+  onXAdd: function() {
+    // Disabling for now
+    //var obj = this.getSelectionModel().getSelected();
+    //this.onAdd();
+  },
+
+  onXDelete: function() {
+    var obj = this.getSelectionModel().getSelected();
+    if (obj) this.onDelete();
+  },
+
+  onXEdit: function() {
+    var obj = this.getSelectionModel().getSelected();
+    if (obj) this.onEdit();
+  },
+    
   /**
    * Called when the add button is pressed, or when the 'a' key is pressed.  By default this will simply fire the 'add' event
    */
+
   onAdd: function() {
     this.fireEvent('new');
   },
